@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = FALSE, cache=FALSE, message=FALSE, hide = TRUE, war
 ```
 
 <img src="./imgs/Twin_Rotor_MIMO_System.gif"
-     height="40%" 
-     width="40%"/>
+     height="60%" 
+     width="60%"/>
      
 ## Project details
 This project use the Twin Rotor MIMO System (TRMS) equipment of Feedback Instruments Ltd. (more information about it in [this link](http://www.cpdee.ufmg.br/~palhares/33-942rotor.pdf)).

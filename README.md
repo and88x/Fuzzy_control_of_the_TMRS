@@ -4,8 +4,8 @@ Andres Fernando Garcia
 6/10/2021
 
 <img src="./imgs/Twin_Rotor_MIMO_System.gif"
-     height="40%" 
-     width="40%"/>
+     height="60%" 
+     width="60%"/>
 
 ## Project details
 
