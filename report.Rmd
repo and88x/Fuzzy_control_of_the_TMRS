@@ -1,0 +1,79 @@
+---
+title: "Fuzzy control of the Twin Rotor Mimo System"
+author: "Andres Fernando Garcia"
+date: "6/10/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache=FALSE, message=FALSE, hide = TRUE, warning = FALSE)
+```
+
+<img src="./imgs/Twin_Rotor_MIMO_System.gif"
+     height="40%" 
+     width="40%"/>
+     
+## Project details
+The objective of the project is to replace the PID controllers with fuzzy controllers. The Takagi-Sugeno controller seems a good option since it would be modeled to the PID control with a diffuse system, but to avoid obtaining the PID response curve, the controllers of the Mamdani type were chosen.
+
+The typical rules of a diffuse Mamdani type controller are:
+
+If **e1** is **A** and **e2** is **B** then **z** is **C**
+
+Where **e1** and **e2** are the input signals with membership functions **A** and **B**. **z** is the output signal with membership function **C**. The selected architecture is based on the fuzzy PD-type controllers shown in the article *[Designing a Fuzzy-like PD controller for an underwater robot](http://hamzib.free.fr/Articles/science15.pdf)*, where the error signal and the error rate signal are used as inputs of the controllers and the fuzzy rules are given as:
+
+```{r fuzzy1_table}
+knitr::kable(data.table::fread("e/de,NB,NM,NS,ZE,PS,PM,PB
+NB,NB,NB,NB,NB,NM,NS,ZE
+NM,NB,NB,NB,NM,NS,ZE,PS
+NS,NB,NB,NM,NS,ZE,PS,PM
+ZE,NB,NM,NS,ZE,PS,PM,PB
+PS,NM,NS,ZE,PS,PM,PB,PB
+PM,NS,ZE,PS,PM,PB,PB,PB
+PB,ZE,PS,PM,PB,PB,PB,PB"), align='cccccccc', caption="Table 1: Controller fuzzy rule set
+")
+```
+Membership functions are defined as **NB** (Negative Big), **NM** (Negative Medium), **NS** (Negative Small), **ZE** (Zero), **PS** (Positive Small), **PM** (Positive Medium), and **PB** (Positive Big). 
+
+```{r memb_input, fig.align='center', fig.show="hold", out.width="49%"}
+library(imager)
+img <- load.image("./imgs/membership_input.png")
+plot(img, axes = FALSE, main = "Figure 1: Membership functions for inputs")
+#
+img <- load.image("./imgs/membership_output.png")
+plot(img, axes = FALSE, main = "Figure 2: Membership functions for outputs")
+```
+
+## Results
+To tune the fuzzy controllers, we started with the proportional and derivative gains of the PID controller. The gains are adjusted using the trial and error technique. The architecture of the controller and the initial response of it can be seen in the following figures:
+
+```{r fig.align='center', fig.height=4}
+img <- load.image("./imgs/fuzzy_controller_architecture.png")
+plot(img, axes = FALSE, main = "Figure 3: Fuzzy controller architecture")
+#
+img <- load.image("./imgs/initial_response.png")
+plot(img, axes = FALSE, main = "Figure 4: Initial response of the controller with the PD parameters")
+```
+
+Once the gains are tuned, there is an answer that has a steady state error as shown in Figure 5.
+
+```{r fig.align='center', fig.height=4}
+img <- load.image("./imgs/Controller_signal_tuned_with_steady_state_error.png")
+plot(img, axes = FALSE, main = "Figure 5: Controller signal tuned with steady state error")
+```
+To remove the steady state error, simply add the signal corresponding to the integral of the error to the fuzzy controller output:
+
+```{r fig.align='center', fig.height=4}
+img <- load.image("./imgs/Final_architecture_of_the_fuzzy_controller.png")
+plot(img, axes = FALSE, main = "Figure 6: Final architecture of the fuzzy controller")
+#
+img <- load.image("./imgs/Final_tuned_driver_response_tuned.png")
+plot(img, axes = FALSE, main = "Figure 7: Final tuned driver response tuned")
+```
+Tuned gains can be entered into the fuzzy controller block by changing the limits of the input signals ([1/3 1/3] and [1/28 1/28] in the case of the fuzzy controller for the pitch) and thus remove the proportional and derivative gains of the controller architecture.
+
+
+```{r fig.align='center', fig.height=4}
+img <- load.image("./imgs/Simplified_architecture_of_the_fuzzy_controller.png")
+plot(img, axes = FALSE, main = "Figure 8: Simplified architecture of the fuzzy controller")
+```
