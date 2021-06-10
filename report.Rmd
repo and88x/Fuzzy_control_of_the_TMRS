@@ -14,7 +14,8 @@ knitr::opts_chunk$set(echo = FALSE, cache=FALSE, message=FALSE, hide = TRUE, war
      width="40%"/>
      
 ## Project details
-The objective of the project is to replace the PID controllers with fuzzy controllers. The Takagi-Sugeno controller seems a good option since it would be modeled to the PID control with a diffuse system, but to avoid obtaining the PID response curve, the controllers of the Mamdani type were chosen.
+This project use the Twin Rotor MIMO System (TRMS) equipment of Feedback Instruments Ltd. (more information about it in [this link](http://www.cpdee.ufmg.br/~palhares/33-942rotor.pdf)).
+The aim of the project is to replace the PID controllers, supplied with the equipment, by fuzzy controllers. The Takagi-Sugeno controller seems a good option since it would be modeled to the PID control with a diffuse system, but to avoid obtaining the PID response curve, the controllers of the Mamdani type were chosen.
 
 The typical rules of a diffuse Mamdani type controller are:
 
